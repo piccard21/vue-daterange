@@ -196,12 +196,12 @@
         <div class="mj-daterange-picker-controls">
             <div class="d-flex flex-wrap justify-content-center">
                 <span
-                        class="mj-daterange-picker-button mr-2 mt-1 mj-daterange-picker-reset"
+                        class="mj-daterange-picker-button mr-md-2 mt-1 mj-daterange-picker-reset"
                         @click="reset"
                 >{{ resetLegend }}</span>
                 <span
                         class="mj-daterange-picker-button mt-1 mj-daterange-picker-submit"
-                        :class="{'is-disabled': !(values.from &amp;&amp; values.to) }"
+                        :class="{'is-disabled': !(values.from && values.to) }"
                         @click="update"
                 >{{ submitLegend }}</span>
             </div>
