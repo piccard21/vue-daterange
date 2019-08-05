@@ -488,8 +488,9 @@
         watch: {
             currentPanel: {
                 immediate: true,
-                handler() {
-                    this.weekSelector = this.panel !== 'range'
+                handler(v) {
+                    this.weekSelector = v === 'week'
+                    this.reset()
                     this.updateCalendar()
                 }
             },
