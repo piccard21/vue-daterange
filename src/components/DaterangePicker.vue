@@ -4,7 +4,7 @@
             :style="cssProps"
     >
         <div
-                v-if="availablePanels.length &gt; 1"
+                v-if="availablePanels.length > 1"
                 class="panels-choices"
         >
             <div class="float-left">
@@ -211,6 +211,7 @@
 
 <script lang="ts">
     import './../assets/icons'
+    import 'bootstrap-4-grid/css/grid.min.css'
     import {dateFilter} from 'vue-date-fns'
     import {
         addDays,
@@ -238,8 +239,6 @@
         subWeeks,
         subYears
     } from 'date-fns'
-
-    import 'bootstrap-4-grid/css/grid.min.css'
 
     const locales = {
         en: require('date-fns/locale/en'),
@@ -274,7 +273,7 @@
             },
             panel: {
                 type: String,
-                default: null
+                default: 'range'
             },
             presets: {
                 type: Array,
@@ -299,7 +298,7 @@
             },
             submitTitle: {
                 type: String,
-                default: null
+                default: "ok"
             },
             theme: {
                 type: Object,
@@ -331,10 +330,10 @@
                 default: 2
             }
         },
-        data () {
+        data() {
             return {
                 // $legends: any;
-                currentPanel: null,
+                currentPanel: undefined,
                 current: null,
                 weekSelector: false,
                 monthDays: [],
@@ -348,17 +347,17 @@
             }
         },
         computed: {
-            availablePanels () {
+            availablePanels() {
                 return this.panels
             },
-            availablePresets () {
+            availablePresets() {
                 const index = this.presets.indexOf('forever')
                 if (!this.begin && index > -1) {
                     this.splicePresets(index)
                 }
                 return this.presets
             },
-            cssProps () {
+            cssProps() {
                 return {
                     '--default-width': this.width,
                     '--primary-color': this.theme.primary,
@@ -371,50 +370,33 @@
                     '--border-color': this.theme.border
                 }
             },
-            created () {
-                // Parse Inputs
-                Object.keys(this.values).forEach(value => {
-                    this.values[value] = isValid(parse(this[value])) ? this[value] : null
-                })
-
-                // Todo ? If from or to is null, or from is after to, both are null
-
-                // Display current month or "to" month
-                this.current = this.values.to ? this.values.to : this.now
-
-                // Update Calendar
-                this.updateCalendar()
-
-                // Set current panel
-                this.currentPanel = this.panel || this.availablePanels[0]
-            },
-            currentMonthName () {
+            currentMonthName() {
                 return format(this.current, 'MMMM YYYY', {
                     locale: locales[this.locale]
                 })
             },
-            currentYearName () {
+            currentYearName() {
                 return format(this.current, 'YYYY', {locale: locales[this.locale]})
             },
-            isPresetPicker () {
+            isPresetPicker() {
                 return this.currentPanel === 'range'
             },
-            isDaysPicker () {
+            isDaysPicker() {
                 return this.currentPanel === 'range' || this.currentPanel === 'week'
             },
-            isMonthsPicker () {
+            isMonthsPicker() {
                 return this.currentPanel === 'month' || this.currentPanel === 'quarter'
             },
-            isYearPicker () {
+            isYearPicker() {
                 return this.currentPanel === 'year'
             },
-            isMonthsPanel () {
+            isMonthsPanel() {
                 return this.currentPanel === 'month'
             },
-            isQuartersPanel () {
+            isQuartersPanel() {
                 return this.currentPanel === 'quarter'
             },
-            firstWeek () {
+            firstWeek() {
                 const days = this.monthDays.slice(0, 7)
                 const week = []
                 for (const day of days) {
@@ -424,17 +406,17 @@
                 }
                 return week
             },
-            resetLegend () {
+            resetLegend() {
                 return this.resetTitle ?
                     this.resetTitle :
                     this.$legends[this.locale].reset
             },
-            submitLegend () {
+            submitLegend() {
                 return this.submitTitle ?
                     this.submitTitle :
                     this.$legends[this.locale].submit
             },
-            yearMonths () {
+            yearMonths() {
                 const months = []
                 let month = startOfYear(this.current)
                 while (months.length !== 12) {
@@ -446,10 +428,10 @@
                 }
                 return months
             },
-            yearQuarters () {
+            yearQuarters() {
                 const quarters = []
-                //  TODO entries vs values
-                for (const [index] of Object.keys(this.yearMonths)) {
+
+                Object.keys(this.yearMonths).forEach((v, index) => {
                     if (index % 3 === 0) {
                         quarters.push({
                             months: [
@@ -463,10 +445,11 @@
                             }
                         })
                     }
-                }
+                })
+
                 return quarters
             },
-            years () {
+            years() {
                 const years = []
                 let i = this.yearsCount
                 let start = this.future ? addYears(this.now, this.yearsCount) : this.now
@@ -485,15 +468,32 @@
                 return years
             }
         },
+        created() {
+            // Parse Inputs
+            Object.keys(this.values).forEach(value => {
+                this.values[value] = isValid(parse(this[value])) ? this[value] : null
+            })
+
+            // Todo ? If from or to is null, or from is after to, both are null
+
+            // Display current month or "to" month
+            this.current = this.values.to ? this.values.to : this.now
+
+            // Update Calendar
+            this.updateCalendar()
+
+            // Set current panel
+            this.currentPanel = this.panel || this.availablePanels[0]
+        },
         watch: {
             currentPanel: {
                 immediate: true,
-                handler () {
+                handler() {
                     this.weekSelector = this.panel !== 'range'
                     this.updateCalendar()
                 }
             },
-            preset (preset) {
+            preset(preset) {
                 this.current = this.now
                 this.updateCalendar()
 
@@ -571,16 +571,16 @@
             }
         },
         methods: {
-            changeMonth (diff) {
+            changeMonth(diff) {
                 this.current = subMonths(this.current, diff)
                 this.updateCalendar()
             },
 
-            changeYear (diff) {
+            changeYear(diff) {
                 this.current = subYears(this.current, diff)
                 this.updateCalendar()
             },
-            dayClasses (day) {
+            dayClasses(day) {
                 const classes = []
 
                 if (day.currentMonth) {
@@ -625,7 +625,7 @@
                 }
                 return classes
             },
-            hoverizeDay (date) {
+            hoverizeDay(date) {
                 if (
                     !this.weekSelector &&
                     (!(this.values.from && !this.values.to) ||
@@ -643,7 +643,7 @@
                     this.hoverRange = [this.values.from, date]
                 }
             },
-            monthClasses (month) {
+            monthClasses(month) {
                 const classes = []
                 if (
                     this.values.to &&
@@ -654,7 +654,7 @@
                 }
                 return classes
             },
-            quarterClasses (quarter) {
+            quarterClasses(quarter) {
                 const classes = []
                 if (
                     this.values.to &&
@@ -666,7 +666,7 @@
                 }
                 return classes
             },
-            reset () {
+            reset() {
                 this.values = {
                     to: null,
                     from: null
@@ -678,7 +678,7 @@
 
                 this.$emit('reset', {to: null, from: null})
             },
-            selectDay (date) {
+            selectDay(date) {
                 if (this.weekSelector) {
                     this.values.from = startOfWeek(date, {weekStartsOn: 1})
                     this.values.to = endOfWeek(date, {weekStartsOn: 1})
@@ -700,29 +700,29 @@
                 }
                 this.preset = 'custom'
             },
-            selectQuarter (quarter) {
+            selectQuarter(quarter) {
                 this.values.from = startOfDay(startOfMonth(quarter.range.start))
                 this.values.to = endOfMonth(quarter.range.end)
                 this.current = this.values.to
             },
 
-            selectMonth (month) {
+            selectMonth(month) {
                 this.values.from = startOfMonth(month.date)
                 this.values.to = endOfMonth(month.date)
                 this.current = this.values.to
             },
 
-            selectYear (year) {
+            selectYear(year) {
                 this.values.from = startOfYear(year.date)
                 this.values.to = endOfYear(year.date)
                 this.current = this.values.to
             },
 
-            splicePresets (index) {
+            splicePresets(index) {
                 this.presets.splice(index, 1)
             },
 
-            update () {
+            update() {
                 if (!this.values.from || !this.values.to) {
                     return
                 }
@@ -732,7 +732,7 @@
                     panel: this.currentPanel
                 })
             },
-            updateCalendar () {
+            updateCalendar() {
                 const days = []
 
                 const lastDayOfMonth = endOfMonth(this.current)
@@ -757,7 +757,7 @@
                 this.monthDays = days
             },
 
-            yearClasses (year) {
+            yearClasses(year) {
                 const classes = []
                 if (this.values.to && this.values.from) {
                     if (
