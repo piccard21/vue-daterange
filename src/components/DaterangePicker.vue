@@ -3,6 +3,7 @@
             class="mj-daterange-picker"
             :style="cssProps"
     >
+        <!--PANELS-->
         <div
                 v-if="availablePanels.length > 1"
                 class="panels-choices"
@@ -13,13 +14,14 @@
                         :key="i"
                         class="panel-button m-1"
                         :class="{ 'is-current': panel === currentPanel }"
-                        @click="currentPanel = panel"
+                        @click="setPanel(panel)"
                 >
                     {{ $legends[locale].panels[panel] }}
                 </div>
             </div>
         </div>
 
+        <!--PRESETS-->
         <div
                 v-if="isPresetPicker"
                 class="preset-ranges"
@@ -44,6 +46,8 @@
                 </div>
             </div>
         </div>
+
+        <!--DAYS-PICKER-->
         <div
                 v-if="isDaysPicker"
                 class="mj-calendar"
@@ -74,6 +78,8 @@
                     />
                 </div>
             </div>
+
+            <!--CALENDAR-->
             <div class="calendar-days-name">
                 <div
                         v-for="(day, i) in firstWeek"
@@ -97,6 +103,9 @@
                 </div>
             </div>
         </div>
+
+
+        <!--MONTHS-PICKER-->
         <div
                 v-if="isMonthsPicker"
                 class="mj-calendar"
@@ -144,6 +153,7 @@
                 </div>
             </div>
 
+            <!--QUARTERS-PICKER-->
             <div
                     v-if="isQuartersPanel"
                     class="calendar-quarters"
@@ -177,6 +187,7 @@
             </div>
         </div>
 
+        <!--YEARS-PICKER-->
         <div
                 v-if="isYearPicker"
                 class="mj-calendar"
@@ -490,7 +501,6 @@
                 immediate: true,
                 handler(v) {
                     this.weekSelector = v === 'week'
-                    this.reset()
                     this.updateCalendar()
                 }
             },
@@ -718,7 +728,10 @@
                 this.values.to = endOfYear(year.date)
                 this.current = this.values.to
             },
-
+            setPanel(panel) {
+                this.currentPanel = panel;
+                this.reset()
+            },
             splicePresets(index) {
                 this.presets.splice(index, 1)
             },
