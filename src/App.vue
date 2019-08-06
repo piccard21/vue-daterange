@@ -1,6 +1,6 @@
 <template>
     <div
-            class="mj-daterange-picker"
+            class="as-daterange-picker"
             :style="cssProps"
     >
         <!--PANELS-->
@@ -50,8 +50,8 @@
         <!--DAYS-PICKER-->
         <div
                 v-if="isDaysPicker"
-                class="mj-calendar"
-                :class="weekSelector ? 'mj-calendar-week' : 'mj-calendar-days'"
+                class="as-calendar"
+                :class="weekSelector ? 'as-calendar-week' : 'as-calendar-days'"
         >
             <div class="calendar-header">
                 <div
@@ -108,7 +108,7 @@
         <!--MONTHS-PICKER-->
         <div
                 v-if="isMonthsPicker"
-                class="mj-calendar"
+                class="as-calendar"
         >
             <div class="calendar-header">
                 <div
@@ -190,7 +190,7 @@
         <!--YEARS-PICKER-->
         <div
                 v-if="isYearPicker"
-                class="mj-calendar"
+                class="as-calendar"
         >
             <div class="calendar-years">
                 <div
@@ -204,14 +204,14 @@
                 </div>
             </div>
         </div>
-        <div class="mj-daterange-picker-controls">
+        <div class="as-daterange-picker-controls">
             <div class="d-flex flex-wrap justify-content-center">
                 <span
-                        class="mj-daterange-picker-button mr-md-2 mt-1 mj-daterange-picker-reset"
+                        class="as-daterange-picker-button mr-md-2 mt-1 as-daterange-picker-reset"
                         @click="reset"
                 >{{ resetLegend }}</span>
                 <span
-                        class="mj-daterange-picker-button mt-1 mj-daterange-picker-submit"
+                        class="as-daterange-picker-button mt-1 as-daterange-picker-submit"
                         :class="{'is-disabled': !(values.from && values.to) }"
                         @click="update"
                 >{{ submitLegend }}</span>
@@ -789,7 +789,11 @@
 </script>
 
 <style lang="scss">
-    .mj-daterange-picker {
+    .as-daterange-picker {
+        font-family: "Avenir", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 5vw;
         text-align: left;
         min-width: 200px;
         width: var(--default-width);
@@ -802,7 +806,7 @@
         }
     }
 
-    .mj-daterange-picker .panels-choices {
+    .as-daterange-picker .panels-choices {
         border-bottom: 1px solid var(--border-color);
         padding: 20px;
 
@@ -826,7 +830,7 @@
         }
     }
 
-    .mj-daterange-picker .preset-ranges {
+    .as-daterange-picker .preset-ranges {
         padding: 20px;
         border-bottom: 1px solid var(--border-color);
 
@@ -888,7 +892,7 @@
         }
     }
 
-    .mj-calendar {
+    .as-calendar {
         color: var(--contrast-color);
         background-color: var(--normal-color);
         padding: 20px;
@@ -1072,7 +1076,7 @@
         }
     }
 
-    .mj-calendar.mj-calendar-days {
+    .as-calendar.as-calendar-days {
         .calendar-days .day {
             &:not(.is-edge-range):hover {
                 background-color: var(--hover-day-color);
@@ -1080,12 +1084,12 @@
         }
     }
 
-    .mj-daterange-picker-controls {
+    .as-daterange-picker-controls {
         margin-top: 10px;
         border-top: 1px solid var(--border-color);
         padding: 20px;
 
-        .mj-daterange-picker-button {
+        .as-daterange-picker-button {
             height: 36px;
             min-width: 150px;
             padding: 5px;
@@ -1101,11 +1105,11 @@
         }
     }
 
-    .mj-daterange-picker-reset {
+    .as-daterange-picker-reset {
         border: 1px solid #e6eaed;
     }
 
-    .mj-daterange-picker-submit {
+    .as-daterange-picker-submit {
         background-color: var(--primary-color);
         color: white;
 
