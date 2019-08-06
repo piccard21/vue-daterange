@@ -1,6 +1,12 @@
 {
   "name": "vue-daterange",
   "version": "0.1.0",
+  "author": "Andreas Stephan <info@cafe-serendipity.com> (info@cafe-serendipity.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/piccard21/vue-daterange"
+  },
+  "license": "MIT",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
